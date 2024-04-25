@@ -434,6 +434,10 @@ static int imx_tmu_enable_msite(struct udevice *dev)
 	return 0;
 }
 
+#if defined(CONFIG_ADVANTECH_MX8) && defined(ADV_AUTO_PROBE_THERMAL_TRIPS)
+int g_cpu_thermal_trip1 = -1;
+#endif
+
 static int imx_tmu_bind(struct udevice *dev)
 {
 	struct imx_tmu_plat *pdata = dev_get_plat(dev);
@@ -455,6 +459,10 @@ static int imx_tmu_bind(struct udevice *dev)
 	pdata->critical = maxc * 1000;
 	pdata->alert = (maxc - 10) * 1000;
 
+#if defined(CONFIG_ADVANTECH_MX8) && defined(ADV_AUTO_PROBE_THERMAL_TRIPS)
+	g_cpu_thermal_trip1 = pdata->critical;
+#endif
+
 	node = ofnode_path("/thermal-zones");
 	ofnode_for_each_subnode(offset, node) {
 		/* Bind the subnode to this driver */
@@ -471,21 +479,12 @@ static int imx_tmu_bind(struct udevice *dev)
 	return 0;
 }
 
-#if defined(CONFIG_ADVANTECH_MX8) && defined(ADV_AUTO_PROBE_THERMAL_TRIPS)
-extern u32 get_cpu_temp_grade(int *minc, int *maxc);
-int g_cpu_thermal_trip1 = -1;
-#endif
-
 static int imx_tmu_parse_fdt(struct udevice *dev)
 {
 	struct imx_tmu_plat *pdata = dev_get_plat(dev), *p_parent_data;
 	struct ofnode_phandle_args args;
 	ofnode trips_np;
 	int ret;
-
-#if defined(CONFIG_ADVANTECH_MX8) && defined(ADV_AUTO_PROBE_THERMAL_TRIPS)
-	int minc, maxc;
-#endif
 
 	debug("%s dev name %s\n", __func__, dev->name);
 
@@ -533,13 +532,6 @@ static int imx_tmu_parse_fdt(struct udevice *dev)
 		else
 			continue;
 	}
-
-#if defined(CONFIG_ADVANTECH_MX8) && defined(ADV_AUTO_PROBE_THERMAL_TRIPS)
-	get_cpu_temp_grade(&minc, &maxc);
-	pdata->alert = maxc * 1000;
-	pdata->critical = maxc * 1000;
-	g_cpu_thermal_trip1 = pdata->critical;
-#endif
 
 	debug("id %d polling_delay %d, critical %d, alert %d\n",
 	      pdata->id, pdata->polling_delay, pdata->critical, pdata->alert);
