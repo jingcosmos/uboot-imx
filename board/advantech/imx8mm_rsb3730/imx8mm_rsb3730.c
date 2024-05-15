@@ -250,18 +250,18 @@ int board_late_init(void)
 	id = (id<<1)|gpio_get_value(BOARD_ID2);
 	id = (id<<1)|gpio_get_value(BOARD_ID1);
 	printf("HW BOARD ID:%d\n",id);
-	display = env_get("fdt_file");
+	display = env_get("fdtfile");
 	if(id == 0) {
 		if (!strstr(display, "-dsi2lvds-")) {
 			sprintf(fdt, "%s%s", CONFIG_OF_LIST, "-dsi2lvds-1920x1080.dtb");
-			env_set("fdt_file", fdt);
+			env_set("fdtfile", fdt);
 		}
 	} else if(id == 1)
-		env_set("fdt_file", CONFIG_DEFAULT_FDT_FILE);
+		env_set("fdtfile", CONFIG_DEFAULT_FDT_FILE);
 	else if(id == 2) {
 		if (!strstr(display, "-dsi-")) {
 			sprintf(fdt, "%s%s", CONFIG_OF_LIST, "-dsi-auog101uan02.dtb");
-			env_set("fdt_file", fdt);
+			env_set("fdtfile", fdt);
 		}
 	}
 
