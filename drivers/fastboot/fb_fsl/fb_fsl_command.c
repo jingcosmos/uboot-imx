@@ -103,10 +103,8 @@ static FbBootMode fastboot_get_bootmode(void)
 	extern int get_recovery_key_pressed(void);
 
 	if(get_recovery_key_pressed()) {
-			printf("*** R5710 RECOVERY OK *** \n");
+			printf("*** R5710 RECOVERY KEY PRESS FINISHED *** \n");
 	}
-	else
-		printf("*** R5710 RECOVERY NOT PRESS ***  \n");
 #endif
 
 #ifdef CONFIG_BCB_SUPPORT
