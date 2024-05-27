@@ -972,6 +972,7 @@ dtb-$(CONFIG_ARCH_IMX8M) += \
 	imx8mm-ab2.dtb \
 	imx8mm-rom5721-a1.dtb \
 	imx8mm-ebcrs08-a2.dtb \
+	imx8mm-ebcrs12-a1.dtb \
 	imx8mm-icore-mx8mm-ctouch2.dtb \
 	imx8mm-icore-mx8mm-edimm2.2.dtb \
 	imx8mm-kontron-n801x-s.dtb \
