@@ -187,9 +187,12 @@
 
 #define CFG_SYS_SDRAM_BASE           0x90000000
 #define PHYS_SDRAM                      0x90000000
+
+#if defined(CONFIG_TARGET_IMX95_AOM3511A1_16G)
 /* Totally 16GB */
 #define PHYS_SDRAM_SIZE			0x70000000 /* 2GB  - 256MB DDR */
 #define PHYS_SDRAM_2_SIZE 		0x380000000 /* 14GB */
+#endif
 
 #define CFG_SYS_FSL_USDHC_NUM	2
 
