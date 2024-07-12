@@ -37,6 +37,10 @@ static iomux_v3_cfg_t const wdog_pads[] = {
 	IMX8MM_PAD_GPIO1_IO02_WDOG1_WDOG_B  | MUX_PAD_CTRL(WDOG_PAD_CTRL),
 };
 
+static iomux_v3_cfg_t lan_pwr_3v3_en[] = {
+	IMX8MM_PAD_GPIO1_IO08_GPIO1_IO8 | MUX_PAD_CTRL(NO_PAD_CTRL),
+};
+
 #ifdef CONFIG_NAND_MXS
 #ifdef CONFIG_SPL_BUILD
 #define NAND_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL2 | PAD_CTL_HYS)
@@ -99,6 +103,11 @@ int board_early_init_f(void)
 	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
 
 	init_uart_clk(1);
+
+/* LAN  POWER_EN 3v3*/
+	imx_iomux_v3_setup_multiple_pads(lan_pwr_3v3_en, ARRAY_SIZE(lan_pwr_3v3_en));
+		gpio_request(LAN_PWR_EN_3v3, "lan_pwr_en_3v3");
+		gpio_direction_output(LAN_PWR_EN_3v3,1);
 
 #ifdef CONFIG_NAND_MXS
 	setup_gpmi_nand(); /* SPL will call the board_early_init_f */
